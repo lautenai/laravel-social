@@ -1,5 +1,5 @@
-@if(count($relations) == 0)
-	<p>No relations.</p>
+@if(count($relationships) == 0)
+	<p>No relationships.</p>
 @else
 	<table>
 		<thead>
@@ -11,14 +11,14 @@
 		</thead>
 
 		<tbody>
-			@foreach($relations as $relation)
+			@foreach($relationships as $relationships)
 				<tr>
-					<td>{{$relation->leader}}</td>
-					<td>{{$relation->follower}}</td>
+					<td>{{$relationships->follower_id}}</td>
+					<td>{{$relationships->followed_id}}</td>
 					<td>
-						<a href="{{URL::to('relations/view/'.$relation->id)}}" class="btn">View</a>
-						<a href="{{URL::to('relations/edit/'.$relation->id)}}" class="btn">Edit</a>
-						<a href="{{URL::to('relations/delete/'.$relation->id)}}" class="btn danger" onclick="return confirm('Are you sure?')">Delete</a>
+						<a href="{{URL::to('relationships/view/'.$relationships->id)}}" class="btn">View</a>
+						<a href="{{URL::to('relationships/edit/'.$relationships->id)}}" class="btn">Edit</a>
+						<a href="{{URL::to('relationships/delete/'.$relationships->id)}}" class="btn danger" onclick="return confirm('Are you sure?')">Delete</a>
 					</td>
 				</tr>
 			@endforeach
@@ -26,4 +26,4 @@
 	</table>
 @endif
 
-<p><a class="btn success" href="{{URL::to('relations/create')}}">Create new Relation</a></p>
+<p><a class="btn success" href="{{URL::to('relationships/create')}}">Create new Relationship</a></p>

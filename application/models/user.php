@@ -26,14 +26,14 @@ class User extends Eloquent {
 		return $this->has_many('Message');
 	}
 
-	public function leaders()
-	{
-		return $this->has_many_and_belongs_to('User', 'relations', 'follower', 'leader');
-	}
-
 	public function followers()
 	{
-		return $this->has_many_and_belongs_to('User', 'relations', 'leader', 'follower');
+		return $this->has_many_and_belongs_to('User', 'relationships', 'followed_id', 'follower_id');
+	}
+
+	public function following()
+	{
+		return $this->has_many_and_belongs_to('User', 'relationships', 'follower_id', 'followed_id');
 	}
 	
 }

@@ -36,10 +36,10 @@ Route::controller(Controller::detect());
 /*
 Route::get('/', function()
 {
-	foreach (User::with(array('leaders', 'followers'))->get() as $user)
+	foreach (User::with(array('followers', 'following'))->get() as $user)
 	{
+		// echo $user->following->username;
 		// echo $user->followers->username;
-		// echo $user->leaders->username;
 		echo "<pre>";
 		var_dump($user);
 		echo "</pre>";
@@ -49,13 +49,13 @@ Route::get('/', function()
 
 Route::get('/', function()
 {
-	$users = User::with(array('leaders', 'followers'))->get();
+	$users = User::with(array('followers', 'following'))->get();
 
 	foreach ($users as $user)
 	{
-		foreach ($user->leaders as $leader)
+		foreach ($user->followers as $follower_id)
 		{
-			echo 'leaders: ' . $leader->username . '<br />';
+			echo 'followers: ' . $follower_id->username . '<br />';
 		}
 	}
 
@@ -63,27 +63,28 @@ Route::get('/', function()
 	
 	foreach ($users as $user)
 	{
-		foreach ($user->followers as $follower)
+		foreach ($user->following as $followed_id)
 		{
-			echo 'followers: ' . $follower->username . '<br />';
+			echo 'following: ' . $followed_id->username . '<br />';
 		}
 	}
 
+	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 });
 
 // Route::get('/(:num)', function($id)
 // {
-// 	// $users = User::with(array('leaders' => function($query) use ($id)
+// 	// $users = User::with(array('followers' => function($query) use ($id)
 // 	// {
-// 	// 	$query->where('leader', '=', $id);
-// 	// }, 'followers' => function($query) use ($id)
+// 	// 	$query->where('follower_id', '=', $id);
+// 	// }, 'following' => function($query) use ($id)
 // 	// {
-// 	// 	$query->where('leader', '=', $id);
+// 	// 	$query->where('follower_id', '=', $id);
 // 	// }))->get();
 
-// 	$users = User::with(array('followers' => function($query) use ($id)
+// 	$users = User::with(array('following' => function($query) use ($id)
 // 	{
-// 		$query->where('leader', '=', $id);
+// 		$query->where('follower_id', '=', $id);
 // 	}))->get();
 
 // 	echo User::find($id)->username . '<br />';
@@ -92,26 +93,26 @@ Route::get('/', function()
 
 // 	// foreach ($users as $user)
 // 	// {
-// 	// 	foreach ($user->leaders as $leader)
+// 	// 	foreach ($user->followers as $follower_id)
 // 	// 	{
 // 	// 		echo '
-// 	// 		leader: ' . $leader->username . '<br />';
+// 	// 		follower_id: ' . $follower_id->username . '<br />';
 // 	// 	}
 // 	// }
 
 // 	echo "<hr />";
 	
-// 	$followers[] = $id;
+// 	$following[] = $id;
 // 	foreach ($users as $user)
 // 	{
-// 		foreach ($user->followers as $follower)
+// 		foreach ($user->following as $followed_id)
 // 		{
-// 			echo 'follower: ' . $follower->username . '<br />';
-// 			$followers[] = $follower->id;
+// 			echo 'followed_id: ' . $followed_id->username . '<br />';
+// 			$following[] = $followed_id->id;
 // 		}
 
 // 		// echo "<pre>";
-// 		// print_r($user->followers);
+// 		// print_r($user->following);
 // 		// echo "</pre>";
 // 	}
 // 	echo "<hr />";
@@ -124,7 +125,7 @@ Route::get('/', function()
 // 	}	
 // 	*/
 
-// 	$messages = Message::where_in('user_id', $followers)->order_by('created_at', 'desc')->get();
+// 	$messages = Message::where_in('user_id', $following)->order_by('created_at', 'desc')->get();
 
 // 	foreach ($messages as $message) {
 // 		echo $message->message.'<br />';
@@ -136,36 +137,36 @@ Route::get('/', function()
 
 Route::get('/user/(:num)', function($id)
 {
-	$user = User::with('leaders', '$followers')->find($id);
-
-	//$user = User::with('followers')->find($id);
+	//$user = User::with('following')->find($id);
+	
+	$user = User::with('followers', '$following')->find($id);
 
 	echo "<p>Me: "; echo $user->username; echo "</p>";
 
 	echo "<hr /><h1>Followers</h1>";
 
-	foreach ($user->followers as $follower)
+	foreach ($user->following as $followed_id)
 	{
-		echo '<p>Follower: ' . $follower->username . '</p>';
+		echo '<p>Follower: ' . $followed_id->username . '</p>';
 	}
 
 	echo "<hr /><h1>Following</h1>";
 
-	//$user = User::with('leaders')->find($id);
+	//$user = User::with('followers')->find($id);
 
-	foreach ($user->leaders as $leader)
+	foreach ($user->followers as $follower_id)
 	{
-		echo '<p>Leader: ' . $leader->username . '</p>';
+		echo '<p>Leader: ' . $follower_id->username . '</p>';
 	}
 
 	echo "<hr /><h1>Messages</h1>";
 	//all following messages
-	$leaders[] = $id;
-	foreach ($user->leaders as $leader) {
-		$leaders[] = $leader->id;
+	$followers[] = $id;
+	foreach ($user->followers as $follower_id) {
+		$followers[] = $follower_id->id;
 	}
 
-	foreach (Message::where_in('user_id', $leaders)->order_by('created_at', 'desc')->get() as $message) {
+	foreach (Message::where_in('user_id', $followers)->order_by('created_at', 'desc')->get() as $message) {
 		echo "<p>";
 		echo $message->message . ' ' . $message->created_at;
 		echo "</p>";
@@ -181,19 +182,19 @@ Route::get('/wall/(:num)', function($id)
 	echo "<p>Me: "; echo $user->username; echo "</p>";
 
 	echo "<hr /><h1>Following</h1>";
-	echo "Total: ". count($user->leaders);
+	echo "Total: ". count($user->followers);
 
 	echo "<hr /><h1>Followers</h1>";
-	echo "Total: ". count($user->followers);
+	echo "Total: ". count($user->following);
 	
 	echo "<hr /><h1>Messages</h1>";
 	//all own and following messages
-	$leaders[] = $id;
-	foreach ($user->leaders as $leader) {
-		$leaders[] = $leader->id;
+	$followers[] = $id;
+	foreach ($user->followers as $follower_id) {
+		$followers[] = $follower_id->id;
 	}
 
-	foreach (Message::where_in('user_id', $leaders)->order_by('created_at', 'desc')->get() as $message) {
+	foreach (Message::where_in('user_id', $followers)->order_by('created_at', 'desc')->get() as $message) {
 		echo "<p>";
 		echo $message->message . ' ' . $message->created_at;
 		echo "</p>";
@@ -220,31 +221,31 @@ Route::get('/profile/(:num)', function($id)
 
 Route::get('/following/(:num)', function($id)
 {
-	$user = User::with('leaders')->find($id);
+	$user = User::with('followers')->find($id);
 
 	echo "<p>Me: "; echo $user->username; echo "</p>";
 
 	echo "<hr /><h1>Following</h1>";
 
-	foreach ($user->leaders as $leader)
+	foreach ($user->followers as $follower_id)
 	{
-		echo '<p>Leader: ' . $leader->username . '</p>';
+		echo '<p>Leader: ' . $follower_id->username . '</p>';
 	}
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 });
 
-Route::get('/followers/(:num)', function($id)
+Route::get('/following/(:num)', function($id)
 {
-	$user = User::with('followers')->find($id);
+	$user = User::with('following')->find($id);
 
 	echo "<p>Me: "; echo $user->username; echo "</p>";
 
 	echo "<hr /><h1>Followers</h1>";
 
-	foreach ($user->followers as $follower)
+	foreach ($user->following as $followed_id)
 	{
-		echo '<p>Follower: ' . $follower->username . '</p>';
+		echo '<p>Follower: ' . $followed_id->username . '</p>';
 	}
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
@@ -275,21 +276,21 @@ Route::get('/data', function()
 	
 
 	
-	//add relations
+	//add relationships
 	for ($i=1; $i < 101; $i++) {
-		$relation = new Relation;
-		$relation->leader = $i++;
-		$relation->follower = $i++;
-		$relation->save();
+		$relationships = new Relationship;
+		$relationships->follower_id = $i++;
+		$relationships->followed_id = $i++;
+		$relationships->save();
 	}
 	
 	
 	/*
-	$followers = Relation::where('leader', '=', 1)->get();
+	$following = Relationship::where('follower_id', '=', 1)->get();
 
 	$fs = '';
-	foreach ($followers as $f) {
-		$fs .= $f->follower. ',';
+	foreach ($following as $f) {
+		$fs .= $f->followed_id. ',';
 	}
 	$fs = rtrim($fs, ',');
 

@@ -1,6 +1,6 @@
 <?php
 
-class Create_Relations_Table {
+class Create_Relationships_Table {
 
 	/**
 	 * Make changes to the database.
@@ -9,12 +9,12 @@ class Create_Relations_Table {
 	 */
 	public function up()
 	{	
-		Schema::create('relations', function($table)
+		Schema::create('relationships', function($table)
 		{
 			$table->increments('id');
 
-			$table->integer('leader');
-			$table->integer('follower');
+			$table->integer('follower_id');
+			$table->integer('followed_id');
 
 			$table->timestamps();
 		});
@@ -27,7 +27,7 @@ class Create_Relations_Table {
 	 */
 	public function down()
 	{
-		Schema::drop('relations');
+		Schema::drop('relationships');
 	}
 
 }

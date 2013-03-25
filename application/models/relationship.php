@@ -1,13 +1,13 @@
 <?php
 
-class Relation extends Eloquent {
+class Relationship extends Eloquent {
 
 	/**
 	 * The name of the table associated with the model.
 	 *
 	 * @var string
 	 */
-	public static $table = 'relations';
+	public static $table = 'relationships';
 
 	/**
 	 * Indicates if the model has update and creation timestamps.

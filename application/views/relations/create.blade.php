@@ -1,26 +1,26 @@
 <div class="span16">
 	<ul class="breadcrumb span6">
 		<li>
-			<a href="{{URL::to('relations')}}">Relations</a> <span class="divider">/</span>
+			<a href="{{URL::to('relationships')}}">Relations</a> <span class="divider">/</span>
 		</li>
-		<li class="active">New Relation</li>
+		<li class="active">New Relationship</li>
 	</ul>
 </div>
 
 {{Form::open(null, 'post', array('class' => 'form-stacked span16'))}}
 	<fieldset>
 		<div class="clearfix">
-			{{Form::label('leader', 'Leader')}}
+			{{Form::label('follower_id', 'Leader')}}
 
 			<div class="input">
-				{{Form::text('leader', Input::old('leader'), array('class' => 'span6'))}}
+				{{Form::text('follower_id', Input::old('follower_id'), array('class' => 'span6'))}}
 			</div>
 		</div>
 		<div class="clearfix">
-			{{Form::label('follower', 'Follower')}}
+			{{Form::label('followed_id', 'Follower')}}
 
 			<div class="input">
-				{{Form::text('follower', Input::old('follower'), array('class' => 'span6'))}}
+				{{Form::text('followed_id', Input::old('followed_id'), array('class' => 'span6'))}}
 			</div>
 		</div>
 
