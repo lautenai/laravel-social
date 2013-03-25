@@ -49,6 +49,8 @@ Route::get('/', function()
 
 Route::get('/', function()
 {
+
+	echo "<table><tr><td>";
 	$users = User::with(array('followers', 'following'))->get();
 
 	foreach ($users as $user)
@@ -59,7 +61,7 @@ Route::get('/', function()
 		}
 	}
 
-	echo "<hr />";
+	echo "</td><td>";
 	
 	foreach ($users as $user)
 	{
@@ -68,6 +70,8 @@ Route::get('/', function()
 			echo 'following: ' . $followed_id->username . '<br />';
 		}
 	}
+
+	echo "</td></tr></table>";
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 });
@@ -219,7 +223,7 @@ Route::get('/profile/(:num)', function($id)
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 });
 
-Route::get('/following/(:num)', function($id)
+Route::get('/followers/(:num)', function($id)
 {
 	$user = User::with('followers')->find($id);
 
@@ -241,11 +245,11 @@ Route::get('/following/(:num)', function($id)
 
 	echo "<p>Me: "; echo $user->username; echo "</p>";
 
-	echo "<hr /><h1>Followers</h1>";
+	echo "<hr /><h1>Following</h1>";
 
 	foreach ($user->following as $followed_id)
 	{
-		echo '<p>Follower: ' . $followed_id->username . '</p>';
+		echo '<p>Following: ' . $followed_id->username . '</p>';
 	}
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";

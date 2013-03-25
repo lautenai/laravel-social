@@ -28,12 +28,12 @@ class User extends Eloquent {
 
 	public function followers()
 	{
-		return $this->has_many_and_belongs_to('User', 'relationships', 'followed_id', 'follower_id');
+		return $this->has_many_and_belongs_to('User', 'relationships', 'follower_id', 'followed_id');
 	}
 
 	public function following()
 	{
-		return $this->has_many_and_belongs_to('User', 'relationships', 'follower_id', 'followed_id');
+		return $this->has_many_and_belongs_to('User', 'relationships', 'followed_id', 'follower_id');
 	}
 	
 }
