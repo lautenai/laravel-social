@@ -173,7 +173,7 @@ class Relations_Controller extends Base_Controller {
 	}
 
 
-	public function get_leaders($id)
+	public function get_followers($id)
 	{
 		$users = User::with(array('following' => function($query) use ($id)
 		{
@@ -205,7 +205,7 @@ class Relations_Controller extends Base_Controller {
 		die();
 	}
 
-	public function get_followers($id)
+	public function get_following($id)
 	{
 		$users = User::with(array('followers' => function($query) use ($id)
 		{
