@@ -36,6 +36,13 @@
 return array(
 
 	'docs' => array('handles' => 'docs'),
+	'gravitas' => array(
+    'autoloads' => array(
+        'map' => array(
+            'Gravitas\\API' => '(:bundle)/api.php',
+	        ),
+	    ),
+	),
 	'scaffold',
 
 );

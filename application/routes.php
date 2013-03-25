@@ -33,6 +33,24 @@
 */
 Route::controller(Controller::detect());
 
+Route::get('/', function()
+{
+	echo HTML::link('wall/101', 'Wall');
+	echo "<br />";
+	echo HTML::link('user/101', 'User');
+	echo "<br />";
+	echo HTML::link('profile/101', 'Profile');
+	echo "<br />";
+	echo HTML::link('following/101', 'Following');
+	echo "<br />";
+	echo HTML::link('followers/101', 'Followers');
+	echo "<br />";
+	echo HTML::link('relationships', 'Relationships');
+
+
+	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
+});
+
 /*
 Route::get('/', function()
 {
@@ -47,9 +65,8 @@ Route::get('/', function()
 });
 */
 
-Route::get('/', function()
+Route::get('/relationships', function()
 {
-
 	echo "<table><tr><td>";
 	$users = User::with(array('followers', 'following'))->get();
 
@@ -211,6 +228,8 @@ Route::get('/profile/(:num)', function($id)
 {
 	$user = User::find($id);
 
+	echo Gravitas\API::image('me@phills.me.uk', NULL, 'Phill Sparks');
+
 	echo "<p>Me: "; echo $user->username; echo "</p>";
 
 	echo "<hr /><h1>My Messages</h1>";
@@ -223,7 +242,7 @@ Route::get('/profile/(:num)', function($id)
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 });
 
-Route::get('/followers/(:num)', function($id)
+Route::get('/following/(:num)', function($id)
 {
 	$user = User::with('followers')->find($id);
 
@@ -233,23 +252,23 @@ Route::get('/followers/(:num)', function($id)
 
 	foreach ($user->followers as $follower_id)
 	{
-		echo '<p>Leader: ' . $follower_id->username . '</p>';
+		echo '<p>Followed: ' . $follower_id->username . '</p>';
 	}
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 });
 
-Route::get('/following/(:num)', function($id)
+Route::get('/followers/(:num)', function($id)
 {
 	$user = User::with('following')->find($id);
 
 	echo "<p>Me: "; echo $user->username; echo "</p>";
 
-	echo "<hr /><h1>Following</h1>";
+	echo "<hr /><h1>Followers</h1>";
 
 	foreach ($user->following as $followed_id)
 	{
-		echo '<p>Following: ' . $followed_id->username . '</p>';
+		echo '<p>Follower: ' . $followed_id->username . '</p>';
 	}
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
