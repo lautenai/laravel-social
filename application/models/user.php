@@ -17,6 +17,16 @@ class User extends Eloquent {
 	public static $timestamps = true;
 
 	/**
+	 * Establish the relationship between a user and profile.
+	 *
+	 * @return Laravel\Database\Eloquent\Relationships\Has_One
+	 */
+	public function profile()
+	{
+		return $this->has_one('Profile');
+	}
+
+	/**
 	 * Establish the relationship between a user and messages.
 	 *
 	 * @return Laravel\Database\Eloquent\Relationships\Has_Many

@@ -113,16 +113,22 @@ will not do this.
 
 
 
-php artisan migrate:install
+	php artisan migrate:install
 
-php artisan scaffold::make message message:string belongs_to:user timestamps
-php artisan migrate
+	php artisan scaffold::make media message:string belongs_to:message timestamps
+	php artisan migrate
+	
+	php artisan scaffold::make message message:string belongs_to:user timestamps
+	php artisan migrate
 
-php artisan scaffold::make user username:string has_many:message timestamps
-php artisan migrate
+	php artisan scaffold::make profile name:string email:string belongs_to:user timestamps
+	php artisan migrate
 
-php artisan scaffold::make relation leader:integer follower:integer timestamps
-php artisan migrate
+	php artisan scaffold::make user username:string has_one:profile has_many:message timestamps
+	php artisan migrate
+
+	php artisan scaffold::make relationship follower_id:integer followed_id:integer timestamps
+	php artisan migrate
 
 
 

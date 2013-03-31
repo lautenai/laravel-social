@@ -167,4 +167,20 @@ class Users_Controller extends Base_Controller {
 
 		return Redirect::to('users');
 	}
+
+	###
+	/**
+	 * View all of the users.
+	 *
+	 * @return void
+	 */
+	public function get_wall($id)
+	{
+		$user = User::find($id);
+
+		$this->layout->title   = 'Wall';
+		$this->layout->content = View::make('users.wall')->with(array('id' => $id, 'user' => $user));
+	}
+
+
 }
