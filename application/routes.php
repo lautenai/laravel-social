@@ -45,7 +45,7 @@ Route::get('/', function()
 	echo "<br />";
 	echo HTML::link('followers/101', 'Followers');
 	echo "<br />";
-	echo HTML::link('relationships', 'Relationships');
+	echo HTML::link('router_relationships', 'Relationships');
 
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
@@ -65,7 +65,7 @@ Route::get('/', function()
 });
 */
 
-Route::get('/relationships', function()
+Route::get('/router_relationships', function()
 {
 	echo "<table><tr><td>";
 	$users = User::with(array('followers', 'following'))->get();

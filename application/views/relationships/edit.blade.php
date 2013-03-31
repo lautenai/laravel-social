@@ -1,7 +1,7 @@
 <div class="span16">
 	<ul class="breadcrumb span6">
 		<li>
-			<a href="{{URL::to('relationships')}}">Relations</a> <span class="divider">/</span>
+			<a href="{{URL::to('relationships')}}">Relationships</a> <span class="divider">/</span>
 		</li>
 		<li class="active">Editing Relationship</li>
 	</ul>

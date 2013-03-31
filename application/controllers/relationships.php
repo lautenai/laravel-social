@@ -1,6 +1,6 @@
 <?php
 
-class Relations_Controller extends Base_Controller {
+class Relationships_Controller extends Base_Controller {
 
 	/**
 	 * The layout being used by the controller.
@@ -25,7 +25,7 @@ class Relations_Controller extends Base_Controller {
 	{
 		$relationships = Relationship::all();
 
-		$this->layout->title   = 'Relations';
+		$this->layout->title   = 'Relationships';
 		$this->layout->content = View::make('relationships.index')->with('relationships', $relationships);
 	}
 
