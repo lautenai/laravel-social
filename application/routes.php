@@ -47,7 +47,6 @@ Route::get('/', function()
 	echo "<br />";
 	echo HTML::link('router_relationships', 'Relationships');
 
-
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 });
 
@@ -200,14 +199,17 @@ Route::get('/wall/(:num)', function($id)
 {
 	$user = User::find($id);
 	
-	echo "<p>Me: "; echo $user->username; echo "</p>";
+	echo "<p>Username: "; echo $user->username; echo "</p>";
+	echo "<p>Name: "; echo $user->profile->name; echo "</p>";
+
+	echo Gravitas\API::image($user->profile->email, NULL, $user->profile->name);
 
 	echo "<hr /><h1>Following</h1>";
 	echo "Total: ". count($user->followers);
 
 	echo "<hr /><h1>Followers</h1>";
 	echo "Total: ". count($user->following);
-	
+
 	echo "<hr /><h1>Messages</h1>";
 	//all own and following messages
 	$followers[] = $id;
@@ -228,9 +230,11 @@ Route::get('/profile/(:num)', function($id)
 {
 	$user = User::find($id);
 
-	echo Gravitas\API::image('me@phills.me.uk', NULL, 'Phill Sparks');
+	echo "<p>Username: "; echo $user->username; echo "</p>";
+	
+	echo "<p>Name: "; echo $user->profile->name; echo "</p>";
 
-	echo "<p>Me: "; echo $user->username; echo "</p>";
+	echo Gravitas\API::image($user->profile->email, NULL, $user->profile->name);
 
 	echo "<hr /><h1>My Messages</h1>";
 
@@ -240,6 +244,36 @@ Route::get('/profile/(:num)', function($id)
 	}
 
 	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
+});
+
+
+Route::get('/follow/(:num)', function($id)
+{
+	$user = User::with('followers')->find($id);
+
+	echo "<p>Me: "; echo $user->username; echo "</p>";
+
+	echo Form::open('follow', 'post');
+		echo Form::hidden('followed_id', $id);
+		echo Form::submit('Follow');
+	echo Form::close();
+
+	echo "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
+});
+
+
+Route::post('/follow', function()
+{
+	$follower_id = 101;
+	
+	$followed_id = Input::get('followed_id');
+
+	if (Relationship::exists($follower_id,$followed_id)) {
+		echo "Friends!";
+	} else {
+		$relationship = Relationship::create(array('follower_id' => $follower_id, 'followed_id' => $followed_id));
+	}
+
 });
 
 Route::get('/following/(:num)', function($id)

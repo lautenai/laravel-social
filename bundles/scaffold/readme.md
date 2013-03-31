@@ -26,7 +26,7 @@ Controller in your routes. Or, simply use this:
 ```php
 <?php
 
-Route::controller(Controller::detect());
+	Route::controller(Controller::detect());
 ```
 
 ## A Few Examples
@@ -115,10 +115,10 @@ will not do this.
 
 	php artisan migrate:install
 
-	php artisan scaffold::make media message:string belongs_to:message timestamps
+	php artisan scaffold::make media type:string url:string belongs_to:message timestamps
 	php artisan migrate
 	
-	php artisan scaffold::make message message:string belongs_to:user timestamps
+	php artisan scaffold::make message message:string has_many:media belongs_to:user timestamps
 	php artisan migrate
 
 	php artisan scaffold::make profile name:string email:string belongs_to:user timestamps
@@ -127,12 +127,13 @@ will not do this.
 	php artisan scaffold::make user username:string has_one:profile has_many:message timestamps
 	php artisan migrate
 
-	php artisan scaffold::make relationship follower_id:integer followed_id:integer timestamps
+	php artisan scaffold::make relationship follower_id:integer followed_id:integer accepted:integer pending:integer timestamps
 	php artisan migrate
+	
+Todo
 
-
-
-
+	Stopping Reverse Pairs
+	In order to stop reverse pairs -- userid "789" and friendid "123" -- you need to either include the logic to check if the pair already exists in the table in a stored procedure, function, or trigger. A CHECK constraint of userid < friendid would stop a valid attempt to add userid "789" and friendid "123" if the reverse doesn't already exist.
 
 
 
