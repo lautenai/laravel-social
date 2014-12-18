@@ -23,13 +23,13 @@ class Relationship extends Eloquent {
 	 */
 	public static function exists($follower_id, $followed_id)
 	{
-    	$inverse = Relationship::where('followed_id', '=', $followed_id)->where('follower_id', '=', $follower_id)->first();
-
-    	$reverse = Relationship::where('follower_id', '=', $followed_id)->where('followed_id', '=', $follower_id)->first();
-
-    	if ($inverse OR $reverse) {
-    		return true;
-    	}
+	    	$inverse = Relationship::where('followed_id', '=', $followed_id)->where('follower_id', '=', $follower_id)->first();
+	
+	    	$reverse = Relationship::where('follower_id', '=', $followed_id)->where('followed_id', '=', $follower_id)->first();
+	
+	    	if ($inverse OR $reverse) {
+	    		return true;
+	    	}
 	}
 	
 }
